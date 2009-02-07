@@ -21,6 +21,17 @@ vector<string> splitAll(string s, string t) {
   return v;
 }
 
+int sscanf_valid(void) {
+  int year, day, hour, minute;
+  char month_c[10];
+  string str = "January 01, 2001 12:04";
+  sscanf(str.c_str(), "%s %d, %d %d:%d", month_c, &day, &year, &hour, &minute);
+  string month(month_c);
+  if (month == "January" && day == 1 && year == 2001 && hour == 12 && minute == 4) {
+    return 1;
+  }
+  return 0;
+}
 int main() {
   vector<int> vi(3, 0);
   vector<string> vs;
@@ -36,5 +47,13 @@ int main() {
     cout << "splitAll NG." << endl;
     exit(1);
   }
+
+  if (sscanf_valid()) {
+    cout << "sscanf ok." << endl;
+  } else {
+    cout << "sscanf ng." << endl;
+    exit(1);
+  }
+
   return 0;
 }
