@@ -11,6 +11,35 @@
 
 using namespace std;
 
+
+
+/*
+  The longest parindrome.... imifu.
+  http://www.prefield.com/algorithm/
+ */
+int longest_palindrome(const char *text, int n) {
+
+  int rad[2*n], i, j, k;
+  for (i = 0, j = 0; i < 2*n; i += k, j = max(j-k, 0)) {
+    while (i-j >= 0 && i+j+1 < 2*n && text[(i-j)/2] == text[(i+j+1)/2]) ++j;
+    rad[i] = j;
+    for (k = 1; i-k >= 0 && rad[i]-k >= 0 && rad[i-k] != rad[i]-k; ++k)
+      rad[i+k] = min(rad[i-k], rad[i]-k);
+  }
+  return *max_element(rad, rad+2*n); // ret. centre of the longest palindrome
+}
+
+bool long_parindrome_valid(void) {
+  string t = "hogefugagufizifdfdkj";
+  if (longest_palindrome(t.c_str(), t.size()) == 7) {
+    cout << "longest_palindrome ok." << endl;
+  } else {
+    cout << "longest_palindrome NG." << endl;
+    exit(1);
+  }
+  return true;
+}
+
 struct Trie {
   int value;
   Trie *next[0x100]; // 16 * 16 + 1, including ascii.
@@ -120,6 +149,8 @@ int main() {
   if (!trie_valid()) {
     exit(1);
   }
-
+  if (!long_parindrome_valid()) {
+    exit(1);
+  }
   return 0;
 }
