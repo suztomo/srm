@@ -1,3 +1,7 @@
+/*
+Debugging cout override created by naoya_t.
+http://topcoder.g.hatena.ne.jp/n4_t/20081204
+ */
 #include <iostream>
 #include <string>
 #include <vector>
