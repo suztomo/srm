@@ -1,9 +1,9 @@
-
+FLAGS= -Wall -ggdb
 .PHONY: test all
-all:
-	g++ -Wall string.cpp -o string
-	g++ -Wall sort.cpp -o sort
+all: string.cpp sort.cpp
+	g++ $(FLAGS) string.cpp -o string
+	g++ $(FLAGS) sort.cpp -o sort
 
-test:
+test: all
 	./sort
 	./string

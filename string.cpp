@@ -11,6 +11,41 @@
 
 using namespace std;
 
+struct Trie {
+  int value;
+  Trie *next[0x100]; // 16 * 16 + 1, including ascii.
+  Trie() { fill(next, next+0x100, (Trie*)0); }
+};
+
+Trie *trie_find(char *t, Trie *r) {
+  for (int i = 0; t[i]; ++i) {
+    char c = t[i];
+    if (!r->next[(int)c]) r->next[(int)c] = new Trie;
+    r = r->next[(int)c];
+  }
+  return r;
+}
+
+bool trie_valid(void) {
+  Trie* t = new Trie, *t1;
+  t1 = trie_find("suzuki", t);
+  t1->value = 3;
+  t1 = trie_find("suzukitomo", t);
+  t1->value = 5;
+  t1 = trie_find("suzuku", t);
+  t1->value = 4;
+
+  t1 = trie_find("suzuki", t);
+  if (t1->value == 3 && trie_find("suzukitomo", t)->value == 5
+      && trie_find("suzuku", t)->value == 4) {
+    cout << "trie ok." << endl;
+  } else {
+    cout << "trie NG." << endl;
+    exit(1);
+  }
+  return 1;
+}
+
 vector<string> splitAll(string s, string t) {
   vector<string> v;
   for (size_t p = 0; (p = s.find(t)) != s.npos; ) {
@@ -32,6 +67,30 @@ int sscanf_valid(void) {
   }
   return 0;
 }
+
+bool match(const char *text, const char *pattern) {
+  switch (*pattern) {
+    case '\0': return !*text;
+    case '*' : return match(text, pattern+1) ||
+                      *text && match(text+1, pattern);
+    case '?' : return *text && match(text+1, pattern+1);
+    default  : return (*text == *pattern) &&
+                      match(text+1, pattern+1);
+  }
+}
+
+bool match_valid(void) {
+  string a = "suzukitomohirodfasdadie";
+  string b = "*hiro??as*ie";
+  if (match(a.c_str(), b.c_str())) {
+    cout << "match ok." << endl;
+  } else {
+    cout << "match ng." << endl;
+    exit(1);
+  }
+  return true;
+}
+
 int main() {
   vector<int> vi(3, 0);
   vector<string> vs;
@@ -52,6 +111,13 @@ int main() {
     cout << "sscanf ok." << endl;
   } else {
     cout << "sscanf ng." << endl;
+    exit(1);
+  }
+
+  if (!match_valid()) {
+    exit(1);
+  }
+  if (!trie_valid()) {
     exit(1);
   }
 
