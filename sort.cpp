@@ -1,3 +1,7 @@
+/*
+  The ``Shakyo'' algorithm library for TopCoder.
+  http://www.prefield.com/algorithm/
+ */
 #define _GLIBCXX_DEBUG
 #include <string>
 #include <vector>
@@ -10,6 +14,21 @@
 #include <list>
 
 using namespace std;
+
+void mergesort(vector<int> &a) {
+  size_t n = a.size();
+  if (n > 1) {
+    vector<int> b(a.begin(), a.begin() + n/2);
+    vector<int> c(a.begin() + n/2, a.end());
+    mergesort(b);
+    mergesort(c);
+    for (size_t i = 0, j = 0, k = 0; i < n; ++i)
+      if (k == c.size())      a[i] = b[j++];
+      else if (j == b.size()) a[i] = c[k++];
+      else if (b[j] < c[k])   a[i] = b[j++];
+      else                    a[i] = c[k++];
+  }
+}
 
 void quicksort_iter(vector<int> &a, int l, int r) {
   if (l < r) {
@@ -32,10 +51,12 @@ void quicksort(vector<int> &a) {
 bool quicksort_valid(void) {
   int k[] = {1, 5,3, 9, 2};
   int sorted[] = {1, 2, 3, 5, 9};
-  vector<int> vi, vi2;
-  for(size_t i=0;i<5;++i) vi.push_back(k[i]), vi2.push_back(sorted[i]);
+  vector<int> vi, vi2, vi3;
+  for(size_t i=0;i<5;++i) vi.push_back(k[i]), vi2.push_back(sorted[i]),
+                            vi3.push_back(k[i]);
   quicksort(vi);
-  if (vi != vi2) {
+  mergesort(vi3);
+  if (vi != vi2 && vi == vi3) {
     exit(1);
   }
   return true;
