@@ -12,8 +12,35 @@
 #include <cmath>
 #include <queue>
 #include <list>
+#include "cout.h"
+
 
 using namespace std;
+
+#define REP(a, b) for (size_t (a) = 0; (a)<(size_t)(b); ++(a))
+
+/*
+  K is sizeof alphabet e.g. a-z => ('z' - 'a'+1)
+  This parameter must be passed by poiner.
+*/
+void countingSort(vector<int> &a, int K) {
+  int c[K], j = 0;
+  fill(c, c+K, 0);
+  REP(i,a.size()) ++c[a[i]];
+  REP(k,K) REP(i,c[k]) a[j++] = k;
+}
+
+bool verify_countingSort(void) {
+  int a[] = {5, 3, 2, 8, 9};
+  int a2[] = {2, 3, 5, 8, 9};
+  vector<int> b, b2;
+  REP(i, 5) b.push_back(a[i]), b2.push_back(a2[i]);
+  countingSort(b, 10);
+  cout << b;
+  cout << b2;
+  assert(b == b2);
+  return true;
+}
 
 void mergesort(vector<int> &a) {
   size_t n = a.size();
@@ -89,5 +116,8 @@ int main() {
   if (!quicksort_valid()) {
     cout << "quicksort ok." << endl;
   }
+  if (verify_countingSort()) 
+    cout << "countingSort ok." << endl;
+
   return 0;
 }
