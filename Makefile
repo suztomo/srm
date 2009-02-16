@@ -1,15 +1,27 @@
 FLAGS= -Wall -ggdb
-.PHONY: test all check-syntax
-all: string.cpp sort.cpp number.cpp
-	g++ $(FLAGS) string.cpp -o string
-	g++ $(FLAGS) sort.cpp -o sort
-	g++ $(FLAGS) number.cpp -o number
+.PHONY: test check-syntax
+TARGETS=string sort number
 
-test: all
+test: $(TARGETS)
 	./sort
 	./string
 	./number	
 
+string: string.cpp
+	g++ $(FLAGS) string.cpp -o string
+
+sort: sort.cpp
+	g++ $(FLAGS) sort.cpp -o sort
+
+number: number.cpp
+	g++ $(FLAGS) number.cpp -o number
+
+
+
+
 
 check-syntax:
 	$(CC) -o /dev/null $(CFLAGS) $(INCLUDEDIR) -S ${CHK_SOURCES}
+
+clean:
+	rm $(TARGETS)

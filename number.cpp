@@ -50,7 +50,31 @@ bool gcd_verify(void) {
   return true;
 }
 
+/*
+  Sieve of eratosthenes.
+  decide a number is a prime or not.
+ */
+vector<int> sieve_of_eratosthenes(int n) {
+  vector<int> sieve(n, 1);
+  for (int i=2; i<n; i++)
+    for (int j=i; j<n; j+=i)
+      sieve[j] = 0;
+  return sieve;
+}
+
+bool sieve_verify(void) {
+  int sieve_num = 1000;
+  vector<int> sieve = sieve_of_eratosthenes(sieve_num);
+  for(int i=1; i<sieve_num; ++i)
+    if (sieve[i])
+      for (int j=2; j<sieve_num; j++)
+        if (i%j == 0)
+          assert(0);
+  return true;
+}
+
 int main() {
   if (gcd_verify()) cout << "gcd ok." << endl;
+  if (sieve_verify()) cout << "eratosthenes ok." << endl;
   return 0;
 }
