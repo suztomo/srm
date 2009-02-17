@@ -9,6 +9,7 @@
 #include <queue>
 #include <list>
 
+#include "cout.h"
 using namespace std;
 
 
@@ -67,9 +68,7 @@ bool trie_valid(void) {
   t1 = trie_find("suzuki", t);
   if (t1->value == 3 && trie_find("suzukitomo", t)->value == 5
       && trie_find("suzuku", t)->value == 4) {
-    cout << "trie ok." << endl;
   } else {
-    cout << "trie NG." << endl;
     exit(1);
   }
   return 1;
@@ -120,6 +119,33 @@ bool match_valid(void) {
   return true;
 }
 
+bool ss_verify(void) {
+  string s = "LOVE=3tako+9mikan+12orange";
+  for(size_t k=0; k<s.size(); ++k) if (s[k] == '=' || s[k]=='+') s[k] = ' ';
+  stringstream ss(s);
+  string left, item;
+  int n;
+  int param[3];
+  vector<string> items;
+  size_t i=0;
+  ss>>left;
+  assert(left == "LOVE");
+  while(ss>>n>>item) {
+    param[i++] = n;
+    items.push_back(item);
+  }
+  if (items[0] == "tako" && items[1] == "mikan" && items[2] == "orange") {
+  } else {
+    assert(0);
+  }
+  if (param[0] == 3 && param[1] == 9 && param[2] == 12) {
+  } else {
+    assert(0);
+  }
+  return true;
+}
+
+
 int main() {
   vector<int> vi(3, 0);
   vector<string> vs;
@@ -147,10 +173,14 @@ int main() {
     exit(1);
   }
   if (!trie_valid()) {
-    exit(1);
+    cout << "trie ok" << endl;
   }
   if (!long_parindrome_valid()) {
-    exit(1);
+    cout << "long_parindrome ok." << endl;
+  }
+  if (ss_verify()) {
+    cout << "string stream ok." << endl;
   }
   return 0;
 }
+

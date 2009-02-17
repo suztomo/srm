@@ -36,8 +36,6 @@ bool verify_countingSort(void) {
   vector<int> b, b2;
   REP(i, 5) b.push_back(a[i]), b2.push_back(a2[i]);
   countingSort(b, 10);
-  cout << b;
-  cout << b2;
   assert(b == b2);
   return true;
 }
