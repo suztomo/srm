@@ -1,0 +1,14 @@
+Copying algorithm C++.
+Spaghetti Source "各種アルゴリズムの C++ による実装"
+
+
+string.cpp
+
+number.cpp
+  To get used to deal with gcd or lcm.
+
+sort.cpp
+  Basic algorithms: quicksort, bubblesort and  merge sort.
+
+matrix.cpp
+  It seems not to be used...

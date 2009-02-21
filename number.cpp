@@ -10,31 +10,42 @@
 #include <list>
 
 using namespace std;
+/* 2^64, about 20 digits */
+typedef long long Int;
 
 // the same as __gcd(a, b)
 int gcd(int a, int b) {
   return b != 0 ? gcd(b, a % b) : a;
 }
+
 int lcm(int a, int b) {
   return a * b / gcd(a, b);
 }
-// a x + b y = gcd(a, b)
-// ?? Nandakore
+
+/*
+  a x + b y = gcd(a, b)
+ There're many pair of this. But returns ???.
+ It seems x is not to be greater than b
+*/
 int extgcd(int a, int b, int &x, int &y) {
   int g = a;
-  x = 1;
-  y = 0;
   if (b != 0) {
     // looks like gcd()
-    g = extgcd(b, a % b, y, x);
+    g = extgcd(b, a % b, y, x); // <- reset x and y
+    // g = b * y + (a%b) * x
     y -= (a / b) * x;
+  } else {
+    // if b == 0
+    // gcd(a, 0) = a = a * 1 + 0 * 0
+    x = 1;
+    y = 0;
   }
   return g;
 }
 
 
 bool gcd_verify(void) {
-  int a=13, b=17, c, d;
+  int a=13, b=17, c, d, e;
   c = lcm(a, b);
   assert(c == 221);
 
@@ -45,10 +56,113 @@ bool gcd_verify(void) {
   c = lcm(a, b);
   assert(c==36);
 
-  extgcd(a, b, c, d);
-  //  assert(d==3);
+
+  /*
+    extgcd();
+    6 = gcd(12, 18)
+    6 = 12 * -1 + 18 * 1
+  */
+  e = extgcd(a, b, c, d);
+  assert(c == -1);
+  assert(d == 1);
+  assert(e == 6);
+
   return true;
 }
+
+/*
+  Calculate the x, s.t. "x * a == 1 (mod m)".
+  Variable a and m must be coprime.
+    x * a = y * m + 1 (y is a integer).
+    if gcd(a, m) > 1, then there's a contradiction:
+      the left part "x*a" is dividable by the gcd, but right part "y*m+1"
+      cannot be dividable by gcd.
+ */
+int invMod(int a, int m) {
+  int x, y; // y is not used.
+  // extgcd : 1 = a*x + m*y.
+  if (extgcd(a, m, x, y) == 1) // the x must not greater than m.
+    return (x + m) % m; // convert x to x > 0.
+  else // if a and m are coprime, unsolvable.
+    return 0;
+}
+
+bool invMod_verify(void) {
+  int a, b, c;
+  // find x, s.t. x*7 = 1 (mod 9)
+  a = invMod(7, 9);
+  assert(a == 4);
+
+  b = invMod(1, 1);
+  // any integer leave its module by 1.
+  assert(b == 0);
+
+  // The numbers are not coprime.
+  c = invMod(6, 4);
+  assert(c == 0);
+  return true;
+}
+
+
+int powMod(int x, int k, int m) {
+  if (k == 0)     return 1;
+  if (k % 2 == 0) return powMod(x*x % m, k/2, m);
+  else            return x*powMod(x, k-1, m) % m;
+}
+
+bool powMod_verify(void) {
+  int r = powMod(12, 5, 19);
+  if (r != 8)
+    assert(false);
+  r = powMod(1, 12, 9);
+  if (r != 1)
+    assert(false);
+  return true;
+}
+
+
+/*
+  ???
+  file:///Users/suztomo/Library/Application%20Support/Firefox/Profiles/m51vomto.default/ScrapBook/data/20090205181421/isprime.html
+ */
+bool suspect(int a, int s, int d, int n) {
+  /* What is powmod */
+  Int x;
+  x= powMod(a, d, n);
+  if (x == 1) return true;
+  for (int r = 0; r < s; ++r) {
+    if (x == n - 1) return true;
+    x = x * x % n;
+  }
+  return false;
+}
+
+// {2,7,61,-1}                 is for n < 4759123141 (= 2^32)
+// {2,3,5,7,11,13,17,19,23,-1} is for n < 10^16 (at least)
+bool isPrime(int n) {
+  if (n <= 1 || (n > 2 && n % 2 == 0)) return false;
+
+  // Famous primes, -1 means the end of array.
+  int test[] = {2,3,5,7,11,13,17,19,23,-1};
+  int d = n - 1, s = 0;
+  // The number of division d by 2 is recorded in s.
+  while (d % 2 == 0) ++s, d /= 2;
+
+  for (int i = 0; test[i] < n && test[i] != -1; ++i)
+    if (!suspect(test[i], s, d, n))
+      return false; // most of them are true?
+  return true;
+}
+
+
+bool isGaussianPrime(Int a, Int b) {
+  if (a < 0) a = -a;
+  if (b < 0) b = -b;
+  if (a == 0) return b % 4 == 3 && isPrime(b);
+  if (b == 0) return a % 4 == 3 && isPrime(a);
+  return isPrime(a*a+b*b);
+}
+
 
 /*
   Sieve of eratosthenes.
@@ -76,5 +190,7 @@ bool sieve_verify(void) {
 int main() {
   if (gcd_verify()) cout << "gcd ok." << endl;
   if (sieve_verify()) cout << "eratosthenes ok." << endl;
+  if (powMod_verify()) cout << "powMod ok." << endl;
+  if (invMod_verify()) cout << "invMod ok." << endl;
   return 0;
 }
