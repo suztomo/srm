@@ -187,10 +187,37 @@ bool sieve_verify(void) {
   return true;
 }
 
+
+/*
+  used to confirm the all variables are the same.
+ */
+#include <cstdarg>
+bool allDifference(int n, ...) {
+  va_list args;
+  va_start(args, n);
+  int s[10];
+  for(int i=0; i<n; ++i)
+    s[i] = va_arg(args, int);
+  for (int j=0; j<n; ++j)
+    for (int i=j+1; i<n; ++i)
+      if (s[i] == s[j])
+        return false;
+  va_end(args);
+  return true;
+}
+
+bool allDifference_verify(void) {
+  assert(allDifference(5, 1, 3, 3, 2, 5) == false);
+  assert(allDifference(3, 1, 2, 3) == true);
+  assert(allDifference(8, 1, 3, 5, 2, 4, 9, 7, 12) == true);
+  return true;
+}
+
 int main() {
   if (gcd_verify()) cout << "gcd ok." << endl;
   if (sieve_verify()) cout << "eratosthenes ok." << endl;
   if (powMod_verify()) cout << "powMod ok." << endl;
   if (invMod_verify()) cout << "invMod ok." << endl;
+  if (allDifference_verify()) cout << "allDifference ok." << endl;
   return 0;
 }

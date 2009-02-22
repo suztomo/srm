@@ -12,3 +12,7 @@ sort.cpp
 
 matrix.cpp
   It seems not to be used...
+
+
+nPk or nCk
+

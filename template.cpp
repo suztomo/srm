@@ -1,5 +1,6 @@
 // BEGIN CUT HERE
 #define _GLIBCXX_DEBUG
+#include "cout.h"
 // END CUT HERE
 #line $NEXTLINENUMBER$ "$FILENAME$"
 #include <string>
