@@ -97,7 +97,9 @@ bool money_change_verify() {
 int main() {
   if (lis_fast_verify() == true)
     cout << "lis_fast ok." << endl;
+  /*
   if (money_change_verify() == true)
     cout << "money_change ok." << endl;
+  */
   return 0;
 }

@@ -213,11 +213,42 @@ bool allDifference_verify(void) {
   return true;
 }
 
+#define C_N 10
+#define REP(a, b) for (size_t (a) = 0; (a)<(size_t)(b); ++(a))
+
+Int triangle[C_N+1][C_N+1];
+
+void C_init() {
+  REP(i, C_N+1)
+    triangle[i][0] = 1, triangle[0][i] = 1;
+  REP(i, C_N+1) REP(j, C_N+1) {
+    if (i * j == 0) continue;
+    triangle[i][j] = triangle[i-1][j] + triangle[i][j-1];
+  }
+}
+
+Int C(int n, int k) {
+  return triangle[n-k][k];
+}
+
+bool C_verify(void) {
+  Int r;
+  C_init();
+  r = C(3, 1);
+  assert(r == 3);
+  assert(C(5, 2) == 10);
+  assert(C(10, 0) == 1);
+  assert(C(10, 5) == 252);
+  assert(C(10, 10) == 1);
+  return true;
+}
+
 int main() {
   if (gcd_verify()) cout << "gcd ok." << endl;
   if (sieve_verify()) cout << "eratosthenes ok." << endl;
   if (powMod_verify()) cout << "powMod ok." << endl;
   if (invMod_verify()) cout << "invMod ok." << endl;
   if (allDifference_verify()) cout << "allDifference ok." << endl;
+  if (C_verify()) cout << "Combination ok." << endl;
   return 0;
 }
