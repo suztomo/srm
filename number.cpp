@@ -8,6 +8,7 @@
 #include <cmath>
 #include <queue>
 #include <list>
+#include "cout.h"
 
 using namespace std;
 /* 2^64, about 20 digits */
@@ -25,7 +26,8 @@ int lcm(int a, int b) {
 /*
   a x + b y = gcd(a, b)
  There're many pair of this. But returns ???.
- It seems x is not to be greater than b
+ x seems not to be greater than b.
+ x and y can be less than 0.
 */
 int extgcd(int a, int b, int &x, int &y) {
   int g = a;
@@ -71,7 +73,7 @@ bool gcd_verify(void) {
 }
 
 /*
-  Calculate the x, s.t. "x * a == 1 (mod m)".
+  Given a and m, calculate the x, s.t. "x * a == 1 (mod m)".
   Variable a and m must be coprime.
     x * a = y * m + 1 (y is a integer).
     if gcd(a, m) > 1, then there's a contradiction:
@@ -81,9 +83,9 @@ bool gcd_verify(void) {
 int invMod(int a, int m) {
   int x, y; // y is not used.
   // extgcd : 1 = a*x + m*y.
-  if (extgcd(a, m, x, y) == 1) // the x must not greater than m.
-    return (x + m) % m; // convert x to x > 0.
-  else // if a and m are coprime, unsolvable.
+  if (extgcd(a, m, x, y) == 1) // the x will not be greater than m. But what if x = -1000?
+    return (x + m) % m; // convert x to be greater than 0 (mod m).
+  else // if a and m are not coprime, unsolvable.
     return 0;
 }
 
@@ -100,6 +102,11 @@ bool invMod_verify(void) {
   // The numbers are not coprime.
   c = invMod(6, 4);
   assert(c == 0);
+
+  a = invMod(17, 13);
+  cout << a << endl;
+
+
   return true;
 }
 
@@ -243,6 +250,41 @@ bool C_verify(void) {
   return true;
 }
 
+
+vector<int> splitPrime(Int n) {
+  Int num = (Int)n;
+  vector<int> ret;
+  Int lim = sqrt(num);
+  for (Int i=2; i <= lim+1;) {
+    if (num % i == 0) {
+      ret.push_back(i);
+      num /= i;
+    } else {
+      ++i;
+    }
+  }
+  if (num > 1) ret.push_back(num);
+  return ret;
+}
+
+int splitPrime_verify() {
+  vector<int> sp1= splitPrime(10);
+  vector<int> sp2;sp2.push_back(2); sp2.push_back(5);
+  if (sp1 != sp2) exit(1);
+  sp2.clear();
+
+  sp1 = splitPrime(111);
+  sp2.push_back(3);sp2.push_back(37);
+  if (sp1 != sp2) exit(1);
+  sp2.clear();
+
+  sp1 = splitPrime(10000000000LL);
+  sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);
+  if (sp1 != sp2) exit(1);
+  return 1;
+}
+
+
 int main() {
   if (gcd_verify()) cout << "gcd ok." << endl;
   if (sieve_verify()) cout << "eratosthenes ok." << endl;
@@ -250,5 +292,6 @@ int main() {
   if (invMod_verify()) cout << "invMod ok." << endl;
   if (allDifference_verify()) cout << "allDifference ok." << endl;
   if (C_verify()) cout << "Combination ok." << endl;
+  if (splitPrime_verify()) cout << "splitPrime ok. " << endl;
   return 0;
 }

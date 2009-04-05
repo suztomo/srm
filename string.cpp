@@ -84,6 +84,23 @@ vector<string> splitAll(string s, string t) {
   return v;
 }
 
+int splitAll_verify() {
+  vector<int> vi(3, 0);
+  vector<string> vs;
+  string t = "rarara | rarere | rere";
+  vs = splitAll(t, " | ");
+  vector<string> vs2;
+  vs2.push_back("rarara");
+  vs2.push_back("rarere");
+  vs2.push_back("rere");
+  if (vs != vs2) {
+    return 0;
+  }
+
+
+  return 1;
+}
+
 int sscanf_valid(void) {
   int year, day, hour, minute;
   char month_c[10];
@@ -147,18 +164,9 @@ bool ss_verify(void) {
 
 
 int main() {
-  vector<int> vi(3, 0);
-  vector<string> vs;
-  string t = "rarara | rarere | rere";
-  vs = splitAll(t, " | ");
-  vector<string> vs2;
-  vs2.push_back("rarara");
-  vs2.push_back("rarere");
-  vs2.push_back("rere");
-  if (vs == vs2) {
+  if (splitAll_verify()) {
     cout << "splitAll ok." << endl;
   } else {
-    cout << "splitAll NG." << endl;
     exit(1);
   }
 
