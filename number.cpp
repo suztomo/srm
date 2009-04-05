@@ -254,8 +254,8 @@ bool C_verify(void) {
 vector<int> splitPrime(Int n) {
   Int num = (Int)n;
   vector<int> ret;
-  Int lim = sqrt(num);
-  for (Int i=2; i <= lim+1;) {
+  ret.push_back(1);
+  for (Int i=2; i*i <= num;) {
     if (num % i == 0) {
       ret.push_back(i);
       num /= i;
@@ -269,17 +269,19 @@ vector<int> splitPrime(Int n) {
 
 int splitPrime_verify() {
   vector<int> sp1= splitPrime(10);
-  vector<int> sp2;sp2.push_back(2); sp2.push_back(5);
+  vector<int> sp2;
+  sp2.push_back(1);sp2.push_back(2); sp2.push_back(5);
   if (sp1 != sp2) exit(1);
   sp2.clear();
 
   sp1 = splitPrime(111);
-  sp2.push_back(3);sp2.push_back(37);
+  sp2.push_back(1);sp2.push_back(3);sp2.push_back(37);
+
   if (sp1 != sp2) exit(1);
   sp2.clear();
 
   sp1 = splitPrime(10000000000LL);
-  sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);
+  sp2.push_back(1);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(2);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);sp2.push_back(5);
   if (sp1 != sp2) exit(1);
   return 1;
 }
