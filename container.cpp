@@ -47,7 +47,27 @@ int map_iterate_sample() {
   return 0;
 }
 
+int next_permutaiton_sample() {
+  int ary[4];
+  ary[0] = 0, ary[1] = 1, ary[2] = 2, ary[3] = 3;
+  set<string> s;
+  vector<string> vs;
+  vs.push_back("a"), vs.push_back("b"), vs.push_back("c"), vs.push_back("d");
+  sort(All(vs));
+  do {
+    string t;
+    t = vs[ary[0]] + vs[ary[1]] + vs[ary[2]] + vs[ary[3]];
+    s.insert(t);
+  } while (next_permutation(ary, ary+4));
+
+  int c = s.size();
+  assert(c == 24);
+  return 0;
+}
+
+
 int main() {
   map_iterate_sample();
+  next_permutaiton_sample();
   return 0;
 }
