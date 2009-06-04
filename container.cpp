@@ -15,6 +15,7 @@
 #include <cmath>
 #include <queue>
 #include <list>
+
 #include "cout.h"
 
 using namespace std;
@@ -65,9 +66,21 @@ int next_permutaiton_sample() {
   return 0;
 }
 
+int min_element_sample() {
+  vector<int> v;
+  v.push_back(1);v.push_back(10);v.push_back(-39);v.push_back(5);
+  assert(-39 == *min_element(All(v)));
+  assert(10 == *max_element(All(v)));
+  
+  return 1;
+}
+
+
+
 
 int main() {
   map_iterate_sample();
   next_permutaiton_sample();
+  min_element_sample();
   return 0;
 }

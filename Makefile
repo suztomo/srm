@@ -1,6 +1,6 @@
 FLAGS= -Wall -ggdb
 .PHONY: test check-syntax
-TARGETS=string sort number dp container
+TARGETS=string sort number dp container binary_search
 
 test: $(TARGETS)
 	./sort
@@ -8,6 +8,7 @@ test: $(TARGETS)
 	./number
 	./dp
 	./container
+	./binary_search
 
 string: string.cpp
 	g++ $(FLAGS) string.cpp -o string
@@ -23,6 +24,9 @@ dp: dp.cpp
 
 container: container.cpp
 	g++ $(FLAGS) container.cpp -o container
+
+binary_search:
+	g++ $(FLAGS) binary_search.cpp -o binary_search
 
 check-syntax:
 	$(CC) -o /dev/null $(CFLAGS) $(INCLUDEDIR) -S ${CHK_SOURCES}

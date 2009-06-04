@@ -13,12 +13,15 @@
 #include <cmath>
 #include <queue>
 #include <list>
+#include <complex>
 
 using namespace std;
 
 typedef vector<int> vi;
 typedef vector<vi> vvi;
 typedef pair<int, int> ii;
+typedef long long LL;
+typedef complex<double> CMP;
 #define Fill(a, b) memset((a), (b), sizeof(a))
 #define REP(a, b) for (size_t (a) = 0; (a)<(size_t)(b); ++(a))
 #define sz size()
