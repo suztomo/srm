@@ -97,7 +97,6 @@ int splitAll_verify() {
     return 0;
   }
 
-
   return 1;
 }
 
@@ -163,6 +162,17 @@ bool ss_verify(void) {
 }
 
 
+bool string_find_verify(void) {
+  string s = "abracadabra";
+  string ss = "cadao";
+
+  if (s.find(ss) == string::npos) {
+    return true;
+  }
+  assert(false);
+
+}
+
 int main() {
   if (splitAll_verify()) {
     cout << "splitAll ok." << endl;
@@ -188,6 +198,9 @@ int main() {
   }
   if (ss_verify()) {
     cout << "string stream ok." << endl;
+  }
+  if (string_find_verify()) {
+    cout << "string find ok." << endl;
   }
   return 0;
 }
