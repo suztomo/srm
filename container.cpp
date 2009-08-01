@@ -66,21 +66,55 @@ int next_permutaiton_sample() {
   return 0;
 }
 
-int min_element_sample() {
+int element_sample() {
   vector<int> v;
   v.push_back(1);v.push_back(10);v.push_back(-39);v.push_back(5);
   assert(-39 == *min_element(All(v)));
   assert(10 == *max_element(All(v)));
-  
+  sort(All(v));
+  assert(binary_search(All(v), 5));
+
+  /* upper_bound returns a itereator of next to upper limit */
+  /* See http://topcoder.g.hatena.ne.jp/nitoyon/20081025/1224944902 */
+
+  /* 6以上になるはじめての場所 */
+  assert(5 == *(upper_bound(All(v), 6) - 1));
+
+  /* 1以下の最大の数字 */
+  assert(1 == *(lower_bound(All(v), 1)));
+
+  v.push_back(10);
+  assert(10 == *adjacent_find(All(v)));
+  assert(2 == count(All(v), 10));
+
+
+
+  cout << "passed min_element_sample" << endl;
+
   return 1;
 }
 
+int count_continue() {
+  int a[] = {1, 3, 5, 2, 4, 10, 2, 2};
+  // got error:   int n = (int)sizeof(a);
+  int n = (int)(sizeof(a) / sizeof(int));
+  int c=0;
+  sort(a, a+n);
+  do {
+    if (adjacent_find(a, a+n) != a + n) {
+      ++c;
+    }
+  }while(next_permutation(a, a+n));
+  assert(c == 4320);
+  return 0;
+}
 
 
 
 int main() {
   map_iterate_sample();
   next_permutaiton_sample();
-  min_element_sample();
+  element_sample();
+  count_continue();
   return 0;
 }

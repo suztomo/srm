@@ -102,8 +102,37 @@ bool sort_by_second() {
   if (vp[0].first == "suzuki" && vp[1].first == "tako" && vp[2].first == "tomohiro"){
     return true;
   }
+  assert(false);
   return false;
 }
+#include <functional>
+
+class comp_size{
+public:
+  template< class PairTyp > bool operator()( PairTyp& a, PairTyp& b ) {
+    return a.size() < b.size();
+  }
+};
+
+
+bool pred_size(vector<string> &a, vector<string> &b) {
+  return a.size() > b.size();
+}
+
+bool sort_vector_by_size() {
+  vector< vector < string > > vv;
+  vector<string> v1; v1.push_back("Hello"); v1.push_back("world");
+  vector<string> v2; v2.push_back("konbanwa"); v2.push_back("hogehog"); v2.push_back("");
+  vector<string> v3;
+  vv.push_back(v1); vv.push_back(v2); vv.push_back(v3);
+  sort(vv.begin(), vv.end(), comp_size());
+
+  assert(vv[0].size() == 0 && vv[1].size() == 2 && vv[2].size() == 3);
+
+
+  return true;
+}
+
 int main() {
   if (sort_by_second()) {
     cout << "sort ok." << endl;
@@ -116,6 +145,7 @@ int main() {
   }
   if (verify_countingSort()) 
     cout << "countingSort ok." << endl;
-
+  if (sort_vector_by_size())
+    cout << "sort by size ok." << endl;
   return 0;
 }
