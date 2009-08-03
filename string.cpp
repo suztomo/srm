@@ -97,7 +97,6 @@ int splitAll_verify() {
     return 0;
   }
 
-
   return 1;
 }
 
@@ -171,6 +170,17 @@ bool test_to_upper() {
 }
 
 
+bool string_find_verify(void) {
+  string s = "abracadabra";
+  string ss = "cadao";
+
+  if (s.find(ss) == string::npos) {
+    return true;
+  }
+  assert(false);
+
+}
+
 int main() {
   if (splitAll_verify()) {
     cout << "splitAll ok." << endl;
@@ -199,6 +209,9 @@ int main() {
   }
   if (test_to_upper()) {
     cout << "toupper ok." << endl;
+  }
+  if (string_find_verify()) {
+    cout << "string find ok." << endl;
   }
   return 0;
 }

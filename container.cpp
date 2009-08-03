@@ -5,7 +5,7 @@
   http://www.topcoder.com/tc?module=Static&d1=tutorials&d2=standardTemplateLibrary2#creating
 
  */
-#define _GLIBCXX_DEBUG
+//#define _GLIBCXX_DEBUG
 #include <string>
 #include <vector>
 #include <map>
@@ -109,6 +109,20 @@ int count_continue() {
   return 0;
 }
 
+int erase_sample() {
+  vector<int> v;
+  v.push_back(2);  v.push_back(5);  v.push_back(3);  v.push_back(9);
+  v.push_back(12);  v.push_back(1);  v.push_back(12);  v.push_back(8);
+  assert(v.size() == 8);
+  sort(All(v));
+  v.erase(unique(All(v)), v.end());
+  assert(v.size() == 7);
+
+  v.clear();
+  assert(v.size() == 0);
+
+  return 1;
+}
 
 
 int main() {
@@ -116,5 +130,6 @@ int main() {
   next_permutaiton_sample();
   element_sample();
   count_continue();
+  erase_sample();
   return 0;
 }
