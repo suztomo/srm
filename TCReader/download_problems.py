@@ -11,17 +11,13 @@ import mechanize
 method = "http://"
 host = "www.topcoder.com"
 domainURL = method + host
-firstNumber = 214
-lastNumber = 415
+firstNumber = 350
+lastNumber = 445
 
-getBodyRegex = re.compile(r'<!-- BEGIN BODY -->(?P<body>.*)<!-- END BODY -->', re.DOTALL)
 
 getProblemRegex = re.compile(r'<a href="(?P<url>/stat\?c=problem_statement[^"]+)"[^\>]*>(?P<title>[^<]+)</a>.*?Used as: (?P<used>[^<]+):',
                              re.IGNORECASE | re.DOTALL)
 ampRegex = re.compile(r'&amp;')
-
-removeBGColorRegex = re.compile(r'BGCOLOR\S+')
-removeIMGRegex = re.compile(r'<IMG[^>]+>', re.IGNORECASE)
 
 problemDirectory = "problems"
 ds = "/"
