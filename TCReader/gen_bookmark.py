@@ -12,13 +12,26 @@ from download_problems import ampRegex
 getBodyRegex = re.compile(r'<!-- BEGIN BODY -->(?P<body>.*)<!-- END BODY -->', re.DOTALL)
 removeBGColorRegex = re.compile(r'BGCOLOR\S+')
 removeIMGRegex = re.compile(r'<IMG[^>]+>', re.IGNORECASE)
-
-pageTemplate = string.Template("""
-<html>
+removeWidthValue = re.compile(r'COLSPAN="7"')
+getProblemRegex = re.compile(r'<a href="(?P<url>/stat\?c=problem_statement[^"]+)"[^\>]*>(?P<title>[^<]+)</a>.*?Used as: (?P<used>[^<]+):',
+                             re.IGNORECASE | re.DOTALL)
+removeUnusedTable1 = re.compile('<TABLE.+?</TABLE>', re.DOTALL)
+removeUnusedTR = re.compile('<TR.+?Problem Statement for.+?</TR>',
+                            re.IGNORECASE | re.DOTALL)
+pageTemplate = string.Template("""<html>
 <head>
-<meta name="viewport" content="width=480, user-scalable=no, maximum-scale=0.6667">
 <title>$title</title>
+
+<style>
+body {
+width: 480px;
+}
+
+
+
+</style>
 </head>
+
 <body>
 <h1>$title</h1>
 <p>SRM$srm $used</p>
@@ -73,12 +86,17 @@ entryTemplate = string.Template("""
 directoryPrefix100 = "SRM"
 directoryPrefix10 = "srm"
 import pdb
+
 if __name__ == "__main__":
-    firstNumber = 188
+
     file_names = listdir(problemDirectory + ds)
     srm_dict = {}
     srms = []
+    count = 1
+
     for name in file_names:
+
+
         srm = name[:3]
         if not srm in srm_dict:
             srm_dict[srm] = 1
@@ -87,7 +105,18 @@ if __name__ == "__main__":
                 srm_dict[srm] = int(name[4:5])
             else:
                 srms.append((int(srm), srm_dict[srm]))
+    firstNumber = srms[0][0]
+    entries = directoryEntry100.substitute(
+        name = (directoryPrefix100 + str(firstNumber) + "-"))
+    entries += directoryEntry10.substitute(
+        name = (directoryPrefix10 + str(firstNumber) + "-"))
+
     for i, problem_num in srms:
+
+        count += 1
+#        if count > 10:
+#            break
+
         if (i % 100 == 0 and i != firstNumber):
             entries += directoryEntryEnd10
             entries += directoryEntryEnd100
@@ -100,7 +129,6 @@ if __name__ == "__main__":
                 name = (directoryPrefix10 + str(i) + "-"))
         problemURL = domainURL + summary_location_fmt % i
 
-        getProblemRegex = re.compile(r'<a href="(?P<url>/stat\?c=problem_statement[^"]+)"[^\>]*>(?P<title>[^<]+)</a>.*?Used as: (?P<used>[^<]+):', re.IGNORECASE | re.DOTALL)
         summary_fname = problemDirectory + ds + str(i) + ".html"
         summary_f = open(summary_fname, "r")
         summary_html = summary_f.read()
@@ -114,6 +142,9 @@ if __name__ == "__main__":
             body = getBodyRegex.search(html).group("body")
             body = removeBGColorRegex.sub('', body)
             body = removeIMGRegex.sub('', body)
+            body = removeWidthValue.sub('', body)
+            body = removeUnusedTable1.sub('',body, 1)
+            body = removeUnusedTR.sub('', body, 1)
             dic = {}
             dic['srm'] = i
             dic['url'] = domainURL + ampRegex.sub('&', m[0])
