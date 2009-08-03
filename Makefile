@@ -1,3 +1,4 @@
+CC=gcc
 FLAGS= -Wall -ggdb
 .PHONY: test check-syntax
 TARGETS=string sort number dp container io #binary_search
