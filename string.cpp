@@ -162,6 +162,14 @@ bool ss_verify(void) {
   return true;
 }
 
+bool test_to_upper() {
+  string s = "AbcDef;";
+  transform(s.begin(), s.end(), s.begin(), (int (*)(int))std::toupper);
+  assert(s == "ABCDEF;");
+    
+  return true;
+}
+
 
 int main() {
   if (splitAll_verify()) {
@@ -188,6 +196,9 @@ int main() {
   }
   if (ss_verify()) {
     cout << "string stream ok." << endl;
+  }
+  if (test_to_upper()) {
+    cout << "toupper ok." << endl;
   }
   return 0;
 }

@@ -105,11 +105,12 @@ bool sort_by_second() {
   assert(false);
   return false;
 }
-#include <functional>
+
 
 class comp_size{
 public:
-  template< class PairTyp > bool operator()( PairTyp& a, PairTyp& b ) {
+  template< class PairTyp >
+  bool operator()( PairTyp& a, PairTyp& b ) {
     return a.size() < b.size();
   }
 };
@@ -128,7 +129,6 @@ bool sort_vector_by_size() {
   sort(vv.begin(), vv.end(), comp_size());
 
   assert(vv[0].size() == 0 && vv[1].size() == 2 && vv[2].size() == 3);
-
 
   return true;
 }
